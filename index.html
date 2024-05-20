@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opay Gift Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f5f5f5;
+            padding-bottom: 50px; /* Adjust for footer space */
+        }
+        .header {
+            background-color: #00aaff;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header .title {
+            font-size: 24px;
+        }
+        .header nav {
+            display: flex;
+            gap: 15px;
+        }
+        .header nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .header nav a:hover {
+            text-decoration: underline;
+        }
+        .balance-container {
+            text-align: center;
+            margin: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .balance {
+            font-size: 36px;
+            color: #00aaff;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .buttons button {
+            padding: 10px 20px;
+            font-size 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .withdraw {
+            background-color: #ff4d4d;
+            color: white;
+        }
+        .fund {
+            background-color: #4caf50;
+            color: white;
+        }
+        .transfer {
+            background-color: #ff9800;
+            color: white;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            min-width: 160px;
+            z-index: 1;
+            border-radius: 5px;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 10px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .footer {
+            background-color: #00aaff;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        /* Slideshow styles */
+        .slideshow-container {
+            position: relative;
+            max-width: 100%;
+            margin: auto;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .mySlides {
+            display: none;
+        }
+        .mySlides img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            margin-top: -22px;
+            padding: 16px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+        }
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+        .prev:hover, .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .dot-container {
+            text-align: center;
+            padding: 10px 0;
+            background: #f5f5f5;
+        }
+        .dot {
+            cursor: pointer;
+            height: 15px;
+            width: 15px;
+            margin: 0 2px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+        .active, .dot:hover {
+            background-color: #717171;
+        }
+        .section {
+            background-color: white;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .section h2 {
+            margin-top: 0;
+        }
+        .transaction-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .transaction-table th, .transaction-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .transaction-table th {
+            background-color: #f2f2f2;
+        }
+        .alert {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ffcc00;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="title">Opay Gift Dashboard</div>
+        <nav>
+            <a href="#">Home</a>
+            <div class="dropdown">
+                <a href="#">More</a>
+                <div class="dropdown-content">
+                    <a href="#">About</a>
+                    <a href="#">Contact</a>
+                    <a href="#">Policy</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="balance-container">
+        <div>Your Balance</div>
+        <div class="balance">₦10,000</div>
+    </div>
+
+    <div class="buttons">
+        <button class="withdraw">Withdraw</button>
+        <button class="fund">Fund</button>
+        <button class="transfer">Transfer</button>
+    </div>
+
+    <!-- Slideshow container -->
+    <div class="slideshow-container">
+        <div class="mySlides">
+            <img src="https://i.postimg.cc/fyKD2xtQ/images-1.jpg" alt="Image 1">
+        </div>
+        <div class="mySlides">
+            <img src="https://i.postimg.cc/ZK5SYvv0/images-2.jpg" alt="Image 2">
+        </div>
+        <div class="mySlides">
+            <img src="https://i.postimg.cc/13LhKWCN/download-2.jpg" alt="Image 3">
+        </div>
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+    </div>
+    <div class="dot-container">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+    </div>
+
+    <!-- Additional Sections -->
+    <div class="section">
+        <h2>List Of Our Best Transactions So Far</h2>
+        <table class="transaction-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2024-05-15</td>
+                    <td>Fund Transfer</td>
+                    <td>₦650,000</td>
+                </tr>
+                <tr>
+                    <td>2024-05-14</td>
+                    <td>Withdrawal</td>
+                    <td>₦1,239,112</td>
+                </tr>
+                <tr>
+                    <td>2024-05-13</td>
+                    <td>Account Funded</td>
+                    <td>₦329,890</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Current Promotions</h2>
+        <p>Check out our latest promotions and special offers to save more on your transactions!</p>
+        <!-- Add promotional content here -->
+    </div>
+
+    <!-- Alert -->
+    <div class="alert" id="alert"></div>
+
+    <div class="footer">
+        &copy; 2024 Opay Gift. All rights reserved.
+    </div>
+
+    <script>
+        let slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("dot");
+            if (n > slides.length) {slideIndex = 1}
+            if (n < 1) {slideIndex = slides.length}
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex-1].style.display = "block";
+            dots[slideIndex-1].className += " active";
+        }
+
+        setInterval(() => {
+            plusSlides(1);
+        }, 3000);
+
+        // Alert function
+        function randomAlert() {
+            let amounts = ['₦5,000', '₦10,000', '₦20,000', '₦30,000', '₦50,000', '₦15,000', '₦100,000', '₦5,000', ];
+            let randomAmount = amounts[Math.floor(Math.random() * amounts.length)];
+            let alertText = `${randomAmount} has just been withdrawn from Opay Gift by  user#####.`;
+            document.getElementById("alert").innerText = alertText;
+            document.getElementById("alert").style.display = "block";
+            setTimeout(() => {
+                document.getElementById("alert").style.display = "none";
+            }, 5000);
+        }
+
+        setInterval(randomAlert, 20000);
+    </script>
+</body>
+</html>
